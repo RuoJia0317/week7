@@ -1,84 +1,55 @@
-// let data = [
-//   {
-//     "id": 0,
-//     "name": "肥宅心碎賞櫻3日",
-//     "imgUrl": "https://images.unsplash.com/photo-1522383225653-ed111181a951?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1655&q=80",
-//     "area": "高雄",
-//     "description": "賞櫻花最佳去處。肥宅不得不去的超讚景點！",
-//     "group": 87,
-//     "price": 1400,
-//     "rate": 10
-//   },
-//   {
-//     "id": 1,
-//     "name": "貓空纜車雙程票",
-//     "imgUrl": "https://images.unsplash.com/photo-1501393152198-34b240415948?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
-//     "area": "台北",
-//     "description": "乘坐以透明強化玻璃為地板的「貓纜之眼」水晶車廂，享受騰雲駕霧遨遊天際之感",
-//     "group": 99,
-//     "price": 240,
-//     "rate": 2
-//   },
-//   {
-//     "id": 2,
-//     "name": "台中谷關溫泉會1日",
-//     "imgUrl": "https://images.unsplash.com/photo-1535530992830-e25d07cfa780?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80",
-//     "area": "台中",
-//     "description": "全館客房均提供谷關無色無味之優質碳酸原湯，並取用八仙山之山冷泉供蒞臨貴賓沐浴及飲水使用。",
-//     "group": 20,
-//     "price": 1765,
-//     "rate": 7
-//   }
-// ];
+let data = [];
 
-let data = []
-
-axios.get('https://raw.githubusercontent.com/hexschool/js-training/main/travelApi.json')
-.then((res) => {
-  data = res.data.data;
-  renderCard(data)
-})
-.catch((e) => {
-  console.log(e)
-})
-
+axios
+  .get(
+    "https://raw.githubusercontent.com/hexschool/js-training/main/travelApi.json"
+  )
+  .then((res) => {
+    data = res.data.data;
+    renderCard(data);
+    renderChart();
+  })
+  .catch((e) => {
+    console.log(e);
+  });
 
 //add area
-const ticketName = document.querySelector('#ticketName')
-const ticketImgUrl = document.querySelector('#ticketImgUrl')
-const ticketRegion = document.querySelector('#ticketRegion')
-const ticketPrice = document.querySelector('#ticketPrice')
-const ticketNum = document.querySelector('#ticketNum')
-const ticketRate = document.querySelector('#ticketRate')
-const ticketDescription = document.querySelector('#ticketDescription')
-const btnAdd = document.querySelector('#btnAdd')
+const ticketName = document.querySelector("#ticketName");
+const ticketImgUrl = document.querySelector("#ticketImgUrl");
+const ticketRegion = document.querySelector("#ticketRegion");
+const ticketPrice = document.querySelector("#ticketPrice");
+const ticketNum = document.querySelector("#ticketNum");
+const ticketRate = document.querySelector("#ticketRate");
+const ticketDescription = document.querySelector("#ticketDescription");
+const btnAdd = document.querySelector("#btnAdd");
 
 //validate message
-const ticketNameMessage = document.querySelector('#ticketName-message i')
-const ticketImgUrlMessage = document.querySelector('#ticketImgUrl-message i')
-const ticketRegionMessage = document.querySelector('#ticketRegion-message i')
-const ticketPriceMessage = document.querySelector('#ticketPrice-message i')
-const ticketNumMessage = document.querySelector('#ticketNum-message i')
-const ticketRateMessage = document.querySelector('#ticketRate-message i')
-const ticketDescriptionMessage = document.querySelector('#ticketDescription-message i')
-
+const ticketNameMessage = document.querySelector("#ticketName-message i");
+const ticketImgUrlMessage = document.querySelector("#ticketImgUrl-message i");
+const ticketRegionMessage = document.querySelector("#ticketRegion-message i");
+const ticketPriceMessage = document.querySelector("#ticketPrice-message i");
+const ticketNumMessage = document.querySelector("#ticketNum-message i");
+const ticketRateMessage = document.querySelector("#ticketRate-message i");
+const ticketDescriptionMessage = document.querySelector(
+  "#ticketDescription-message i"
+);
 
 //search area
-const cantFindArea = document.querySelector('#cantFindArea')
-const ticketCardArea = document.querySelector('#ticketCard-area')
-const searchArea = document.querySelector('#searchArea')
-const searchResultText = document.querySelector('#searchResult-text')
+const cantFindArea = document.querySelector("#cantFindArea");
+const ticketCardArea = document.querySelector("#ticketCard-area");
+const searchArea = document.querySelector("#searchArea");
+const searchResultText = document.querySelector("#searchResult-text");
 
 let validateFlag = true;
 
-function renderCard(arr){
-  ticketCardArea.innerHTML = ""
-  searchResultText.textContent = `本次搜尋共 ${arr.length} 筆資料`
-  if(arr.length === 0){
-    cantFindArea.classList.remove('hide')
-  }else{
-    cantFindArea.classList.add('hide')
-    arr.forEach(data => {
+function renderCard(arr) {
+  ticketCardArea.innerHTML = "";
+  searchResultText.textContent = `本次搜尋共 ${arr.length} 筆資料`;
+  if (arr.length === 0) {
+    cantFindArea.classList.remove("hide");
+  } else {
+    cantFindArea.classList.add("hide");
+    arr.forEach((data) => {
       ticketCardArea.innerHTML += `
       <li class="ticketCard">
       <div class="ticketCard-img">
@@ -108,41 +79,39 @@ function renderCard(arr){
         </div>
       </div>
     </li>
-      `
+      `;
     });
-
   }
 }
 
+searchArea.addEventListener("change", () => {
+  filterArea();
+});
 
-
-searchArea.addEventListener('change',()=>{
-  filterArea()
-})
-
-function filterArea(){
+function filterArea() {
   let value = searchArea.value;
-  if(value === "all" || value === "地區搜尋"){
-    renderCard(data)
-  }else{
-    let arr = selectedAreaData(value)
-    renderCard(arr)
+  if (value === "all" || value === "地區搜尋") {
+    renderCard(data);
+  } else {
+    let arr = selectedAreaData(value);
+    renderCard(arr);
   }
+  renderChart()
 }
 
-function selectedAreaData(area){
+function selectedAreaData(area) {
   let arr = data.filter((item) => {
-    if(item.area === area){
-      return item
+    if (item.area === area) {
+      return item;
     }
-  })
-  return arr
+  });
+  return arr;
 }
 
-btnAdd.addEventListener('click',(e)=>{
-  e.preventDefault()
-  let obj = {}
-  let objId = data.length + 1
+btnAdd.addEventListener("click", (e) => {
+  e.preventDefault();
+  let obj = {};
+  let objId = data.length + 1;
 
   obj.id = objId;
   obj.name = ticketName.value;
@@ -152,48 +121,100 @@ btnAdd.addEventListener('click',(e)=>{
   obj.group = ticketNum.value;
   obj.price = ticketPrice.value;
   obj.rate = ticketRate.value;
-  
-  checkInput()
-  if(validateFlag) {
-    data.push(obj)
-    cleanInput()
-    filterArea()
-  }
-})
 
-function cleanInput(){
-  ticketName.value = ""
-  ticketImgUrl.value = ""
-  ticketRegion.value = ""
-  ticketDescription.value = ""
-  ticketNum.value = ""
-  ticketPrice.value = ""
-  ticketRate.value = ""
+  checkInput();
+  if (validateFlag) {
+    data.push(obj);
+    cleanInput();
+    filterArea();
+  }
+});
+
+function cleanInput() {
+  ticketName.value = "";
+  ticketImgUrl.value = "";
+  ticketRegion.value = "";
+  ticketDescription.value = "";
+  ticketNum.value = "";
+  ticketPrice.value = "";
+  ticketRate.value = "";
 }
 
-function checkInput(){
+function checkInput() {
   let inputArr = [
-    {input:ticketName, message:ticketNameMessage},
-    {input:ticketImgUrl, message:ticketImgUrlMessage},
-    {input:ticketRegion, message:ticketRegionMessage},
-    {input:ticketPrice, message:ticketPriceMessage},
-    {input:ticketNum, message:ticketNumMessage},
-    {input:ticketRate, message:ticketRateMessage},
-    {input:ticketDescription, message:ticketDescriptionMessage},
-  ]
+    { input: ticketName, message: ticketNameMessage },
+    { input: ticketImgUrl, message: ticketImgUrlMessage },
+    { input: ticketRegion, message: ticketRegionMessage },
+    { input: ticketPrice, message: ticketPriceMessage },
+    { input: ticketNum, message: ticketNumMessage },
+    { input: ticketRate, message: ticketRateMessage },
+    { input: ticketDescription, message: ticketDescriptionMessage },
+  ];
 
-  for(let i = 0; i < inputArr.length; i ++) {
-    let emptyNum = 0
-    if(inputArr[i].input.value === ""){
-      inputArr[i].message.classList.remove('hide')
-      emptyNum ++
-    }else{
-      inputArr[i].message.classList.add('hide')
+  for (let i = 0; i < inputArr.length; i++) {
+    let emptyNum = 0;
+    if (inputArr[i].input.value === "") {
+      inputArr[i].message.classList.remove("hide");
+      emptyNum++;
+    } else {
+      inputArr[i].message.classList.add("hide");
     }
-    if(emptyNum  != 0){
-      validateFlag = false
-    }else{
-      validateFlag = true
+    if (emptyNum != 0) {
+      validateFlag = false;
+    } else {
+      validateFlag = true;
     }
   }
 }
+
+function renderChart() {
+  let obj = {};
+  data.forEach((item) => {
+    let { area } = item;
+    if (obj[area] === undefined) {
+      obj[area] = 1;
+    } else {
+      obj[area] += 1;
+    }
+  });
+
+  let chartData = [];
+  let area = Object.keys(obj);
+  area.forEach((item) => {
+    let arr = [];
+    arr.push(item);
+    arr.push(obj[item]);
+    chartData.push(arr);
+  });
+
+  let chart = c3.generate({
+    bindto: "#chart",
+    size: {
+      width: 180,
+      height: 180
+    },
+
+    color: {
+      pattern: ['#E68619','#26BFC7','#5151D3', ]
+    },
+    data: {
+      columns: chartData,
+      type: "donut",
+      
+      onclick: function (d, i) { console.log("onclick", d, i); },
+      onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+      onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    },
+    donut: {
+      width: 10,
+      label: {
+        show: false
+      },
+      title: "套票地區比重",
+    }
+
+    
+  });
+}
+
+
