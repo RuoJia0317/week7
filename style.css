@@ -227,6 +227,11 @@ body {
   }
 }
 
+.searchAreaBox{
+  max-width: 920px;   
+  padding: 50px 0;
+}
+
 .search-area {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -234,9 +239,6 @@ body {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: start;
-  /* max-width: 920px; */
-  /* margin: 0 auto; */
-  /* padding: 50px 0; */
 }
 
 .search-area p {
