@@ -96,7 +96,7 @@ function filterArea() {
     let arr = selectedAreaData(value);
     renderCard(arr);
   }
-  renderChart()
+  
 }
 
 function selectedAreaData(area) {
@@ -127,6 +127,7 @@ btnAdd.addEventListener("click", (e) => {
     data.push(obj);
     cleanInput();
     filterArea();
+    renderChart()
   }
 });
 
